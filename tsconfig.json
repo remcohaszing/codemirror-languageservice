@@ -1,0 +1,13 @@
+{
+  "exclude": ["src"],
+  "references": [{ "path": "./tsconfig.build.json" }],
+  "compilerOptions": {
+    "module": "preserve",
+    "moduleDetection": "force",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "types": []
+  }
+}

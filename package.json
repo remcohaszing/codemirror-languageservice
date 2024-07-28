@@ -1,0 +1,66 @@
+{
+  "name": "codemirror-languageservice",
+  "version": "0.0.0",
+  "description": "Integrate an LSP compatible language service into CodeMirror",
+  "keywords": [
+    "code",
+    "codemirror",
+    "code-mirror",
+    "editor",
+    "languageserver",
+    "languageservice",
+    "language-server",
+    "language-service",
+    "lsp"
+  ],
+  "homepage": "https://github.com/remcohaszing/codemirror-languageservice#readme",
+  "bugs": "https://github.com/remcohaszing/codemirror-languageservice/issues",
+  "repository": "remcohaszing/codemirror-languageservice",
+  "funding": "https://github.com/sponsors/remcohaszing",
+  "license": "MIT",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": "./dist/codemirror-languageservice.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "prepack": "tsc --build",
+    "prestart": "tsc --build",
+    "start": "vite example",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "vscode-languageserver-protocol": "^3.0.0",
+    "vscode-languageserver-textdocument": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/lint": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0"
+  },
+  "devDependencies": {
+    "@codemirror/commands": "^6.0.0",
+    "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/theme-one-dark": "^6.0.0",
+    "@vitest/browser": "^2.0.0",
+    "@vitest/coverage-istanbul": "^2.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-remcohaszing": "^10.0.0",
+    "hast-util-to-dom": "^4.0.0",
+    "mdast-util-from-markdown": "^2.0.0",
+    "mdast-util-to-hast": "^13.0.0",
+    "playwright": "^1.0.0",
+    "prettier": "^3.0.0",
+    "remark-cli": "^12.0.0",
+    "remark-preset-remcohaszing": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^2.0.0",
+    "vscode-languageserver-types": "^3.0.0"
+  }
+}

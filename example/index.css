@@ -1,0 +1,13 @@
+body {
+  font-family: system-ui;
+}
+
+.cm-lintRange-deprecated {
+  background-image: none !important;
+  text-decoration: line-through;
+}
+
+.cm-lintRange-unnecessary {
+  background-repeat: no-repeat !important;
+  opacity: 0.4;
+}
