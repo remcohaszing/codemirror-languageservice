@@ -240,11 +240,11 @@ Known language services that you could use this for:
 - [`vscode-css-languageservice`](https://github.com/microsoft/vscode-css-languageservice) — CSS,
   LESS & SCSS language service extracted from VSCode to be reused.
 - [`vscode-html-languageservice`](https://github.com/microsoft/vscode-html-languageservice) —
-  Language services for HTML,
+  Language services for HTML.
 - [`vscode-json-languageservice`](https://github.com/microsoft/vscode-json-languageservice) — JSON
-  language service extracted from VSCode to be reused
+  language service extracted from VSCode to be reused.
 - [`vscode-markdown-languageservice`](https://github.com/microsoft/vscode-markdown-languageservice)
-  — The language service that powers VS Code’s Markdown support
+  — The language service that powers VS Code’s Markdown support.
 - [`yaml-language-server`](https://github.com/redhat-developer/yaml-language-server) — Language
   Server for YAML Files.
 - [`@tailwindcss/language-service`](https://github.com/tailwindlabs/tailwindcss-intellisense) —
