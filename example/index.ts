@@ -178,52 +178,37 @@ const view = new EditorView({
       ...completionKeymap,
       ...lintKeymap
     ]),
-    hoverTooltip(
-      // @ts-expect-error EditorView is not assignable to EditorView?
-      createHoverTooltipSource(hoverTooltipOptions)
-    ),
+    hoverTooltip(createHoverTooltipSource(hoverTooltipOptions)),
     linter(createLintSource(lintOptions))
   ]
 })
 
 document.getElementById('lowercase-button')!.addEventListener('click', () => {
-  const document = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
-  const text = document.getText()
-
-  dispatchTextEdits(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    [
-      {
-        newText: text.toLowerCase(),
-        range: {
-          start: document.positionAt(0),
-          end: document.positionAt(text.length)
-        }
-      }
-    ]
-  )
-})
-
-document.getElementById('uppercase-button')!.addEventListener('click', () => {
-  // @ts-expect-error `EditorView` is not assignable to itself?
   const document = getTextDocument(view.state)
   const text = document.getText()
 
-  dispatchTextEdits(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    [
-      {
-        newText: text.toUpperCase(),
-        range: {
-          start: document.positionAt(0),
-          end: document.positionAt(text.length)
-        }
+  dispatchTextEdits(view, [
+    {
+      newText: text.toLowerCase(),
+      range: {
+        start: document.positionAt(0),
+        end: document.positionAt(text.length)
       }
-    ]
-  )
+    }
+  ])
+})
+
+document.getElementById('uppercase-button')!.addEventListener('click', () => {
+  const document = getTextDocument(view.state)
+  const text = document.getText()
+
+  dispatchTextEdits(view, [
+    {
+      newText: text.toUpperCase(),
+      range: {
+        start: document.positionAt(0),
+        end: document.positionAt(text.length)
+      }
+    }
+  ])
 })

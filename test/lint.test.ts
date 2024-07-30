@@ -20,12 +20,7 @@ test('diagnostics args', async () => {
 
   await lintSource(view)
 
-  expect(document).toBe(
-    getTextDocument(
-      // @ts-expect-error EditorView is not assignable to EditorView?
-      view.state
-    )
-  )
+  expect(document).toBe(getTextDocument(view.state))
 })
 
 test('ignore outdated document', async () => {

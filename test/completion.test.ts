@@ -38,12 +38,7 @@ test('completion args explicit', async () => {
 
   await completionSource(new CompletionContext(view.state, 3, true))
 
-  expect(document).toBe(
-    getTextDocument(
-      // @ts-expect-error EditorView is not assignable to EditorView?
-      view.state
-    )
-  )
+  expect(document).toBe(getTextDocument(view.state))
   expect(position).toStrictEqual({ line: 0, character: 3 })
   expect(context).toStrictEqual({ triggerKind: CompletionTriggerKind.Invoked })
 })
@@ -69,12 +64,7 @@ test('completion args implicit', async () => {
 
   await completionSource(new CompletionContext(view.state, 3, false))
 
-  expect(document).toBe(
-    getTextDocument(
-      // @ts-expect-error EditorView is not assignable to EditorView?
-      view.state
-    )
-  )
+  expect(document).toBe(getTextDocument(view.state))
   expect(position).toStrictEqual({ line: 0, character: 3 })
   expect(context).toStrictEqual({
     triggerCharacter: 'x',

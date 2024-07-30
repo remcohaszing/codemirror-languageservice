@@ -23,19 +23,9 @@ test('hover args', async () => {
     }
   })
 
-  const tooltip = await hoverTooltipSource(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    2,
-    1
-  )
+  const tooltip = await hoverTooltipSource(view, 2, 1)
 
-  expect(document).toBe(
-    getTextDocument(
-      // @ts-expect-error EditorView is not assignable to EditorView?
-      view.state
-    )
-  )
+  expect(document).toBe(getTextDocument(view.state))
   expect(position).toStrictEqual({ line: 0, character: 2 })
   expect(tooltip).toBeNull()
 })
@@ -56,12 +46,7 @@ test('ignore outdated document', async () => {
     }
   })
 
-  const tooltip = await hoverTooltipSource(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    2,
-    1
-  )
+  const tooltip = await hoverTooltipSource(view, 2, 1)
 
   expect(tooltip).toBeNull()
 })
@@ -81,12 +66,7 @@ test('without range', async () => {
     }
   })
 
-  const tooltip = await hoverTooltipSource(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    7,
-    1
-  )
+  const tooltip = await hoverTooltipSource(view, 7, 1)
 
   expect(tooltip).toStrictEqual({
     pos: 7,
@@ -123,12 +103,7 @@ test('with range', async () => {
     }
   })
 
-  const tooltip = await hoverTooltipSource(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view,
-    7,
-    1
-  )
+  const tooltip = await hoverTooltipSource(view, 7, 1)
 
   expect(tooltip).toStrictEqual({
     pos: 5,

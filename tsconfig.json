@@ -2,7 +2,7 @@
   "exclude": ["src"],
   "references": [{ "path": "./tsconfig.build.json" }],
   "compilerOptions": {
-    "module": "preserve",
+    "module": "node16",
     "moduleDetection": "force",
     "noEmit": true,
     "strict": true,

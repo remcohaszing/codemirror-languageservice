@@ -10,10 +10,7 @@ test('inmemory://', () => {
     extensions: [textDocument()]
   })
 
-  const document = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const document = getTextDocument(view.state)
   expect(document.uri).toBe('inmemory://1')
   expect(document.version).toBe(0)
   expect(document.getText()).toBe('Initial text\n')
@@ -25,10 +22,7 @@ test('uri', () => {
     extensions: [textDocument('file:///original.txt')]
   })
 
-  const original = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const original = getTextDocument(view.state)
   expect(original.uri).toBe('file:///original.txt')
   expect(original.version).toBe(0)
   expect(original.languageId).toBe('plaintext')
@@ -36,10 +30,7 @@ test('uri', () => {
 
   view.dispatch({ effects: StateEffect.reconfigure.of(textDocument('file:///updated.txt')) })
 
-  const updated = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const updated = getTextDocument(view.state)
   expect(updated.uri).toBe('file:///updated.txt')
   expect(updated.version).toBe(0)
   expect(updated.languageId).toBe('plaintext')
@@ -52,20 +43,14 @@ test('language ID', () => {
     extensions: [textDocument()]
   })
 
-  const original = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const original = getTextDocument(view.state)
   expect(original.version).toBe(0)
   expect(original.languageId).toBe('plaintext')
   expect(original.getText()).toBe('{}\n')
 
   view.dispatch({ effects: StateEffect.appendConfig.of(json()) })
 
-  const updated = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const updated = getTextDocument(view.state)
   expect(updated.version).toBe(1)
   expect(updated.languageId).toBe('json')
   expect(updated.getText()).toBe('{}\n')
@@ -76,16 +61,10 @@ test('update reuse', () => {
     doc: 'Initial text\n',
     extensions: [textDocument()]
   })
-  const original = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const original = getTextDocument(view.state)
 
   view.dispatch({ effects: StateEffect.appendConfig.of([]) })
 
-  const updated = getTextDocument(
-    // @ts-expect-error EditorView is not assignable to EditorView?
-    view.state
-  )
+  const updated = getTextDocument(view.state)
   expect(updated).toBe(original)
 })
