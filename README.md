@@ -50,9 +50,9 @@ npm install \
 ## Usage
 
 - First, create a [CodeMirror][] `EditorView` as usual.
-- Since [LSP][] is based on heavily on files and URIs, you need to add the `textDocument()`
-  extension to your editor. It’s recommended to pass a file URI. If none is given, a URI is
-  generated that uses the `inmemory://` protocol.
+- Since [LSP][] is based heavily on files and URIs, you need to add the `textDocument()` extension
+  to your editor. It’s recommended to pass a file URI. If none is given, a URI is generated that
+  uses the `inmemory://` protocol.
 - It’s recommended to add a language extension. This is used to detect the `languageId` for text
   documents. If this isn’t available, the `plaintext` language is used.
 - Since [LSP][] uses markdown, you need to provide a function to convert markdown to DOM. A good
