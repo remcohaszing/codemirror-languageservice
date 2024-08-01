@@ -1,7 +1,7 @@
 {
   "name": "codemirror-languageservice",
   "version": "0.1.0",
-  "description": "Integrate an LSP compatible language service into CodeMirror",
+  "description": "Integrate a Language Server Protocol compatible language service into CodeMirror",
   "keywords": [
     "code",
     "codemirror",

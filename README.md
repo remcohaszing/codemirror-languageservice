@@ -5,7 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/codemirror-languageservice)](https://www.npmjs.com/package/codemirror-languageservice)
 [![npm downloads](https://img.shields.io/npm/dm/codemirror-languageservice)](https://www.npmjs.com/package/codemirror-languageservice)
 
-Integrate an [Language Server Protocol][lsp] compatible language service into [CodeMirror][].
+Integrate a [Language Server Protocol][lsp] compatible language service into [CodeMirror][].
 
 ## Table of Contents
 
