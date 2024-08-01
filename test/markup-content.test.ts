@@ -134,3 +134,31 @@ test('markdownToDom iterable', () => {
     </DocumentFragment>
   `)
 })
+
+test('markdownToDom null', () => {
+  const fragment = fromMarkupContent(
+    { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
+    document.createDocumentFragment(),
+    {
+      markdownToDom() {
+        return null
+      }
+    }
+  )
+
+  expect(fragment).toMatchInlineSnapshot('<DocumentFragment />')
+})
+
+test('markdownToDom undefined', () => {
+  const fragment = fromMarkupContent(
+    { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
+    document.createDocumentFragment(),
+    {
+      markdownToDom() {
+        // Do nothing
+      }
+    }
+  )
+
+  expect(fragment).toMatchInlineSnapshot('<DocumentFragment />')
+})

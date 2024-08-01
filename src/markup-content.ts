@@ -16,6 +16,10 @@ function processMarkdown(
   options: fromMarkupContent.Options
 ): undefined {
   const nodes = options.markdownToDom(markdown)
+  if (nodes == null) {
+    return
+  }
+
   if (typeof nodes !== 'string' && Symbol.iterator in nodes) {
     parent.append(...nodes)
   } else {
@@ -33,7 +37,9 @@ export declare namespace fromMarkupContent {
      * @returns
      *   DOM nodes or text to append to the resulting DOM container.
      */
-    markdownToDom: (markdown: string) => Iterable<Node | string> | Node | string
+    markdownToDom: (
+      markdown: string
+    ) => Iterable<Node | string> | Node | string | null | undefined | void
   }
 }
 
