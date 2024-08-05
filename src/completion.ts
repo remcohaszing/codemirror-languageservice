@@ -108,6 +108,11 @@ export declare namespace createCompletionSource {
      * The section to use for completions.
      */
     section?: string
+
+    /**
+     * Only trigger completions automatically when one of these characters is typed.
+     */
+    triggerCharacters?: string
   }
 }
 
@@ -125,12 +130,22 @@ export function createCompletionSource(options: createCompletionSource.Options):
   return async (context) => {
     const textDocument = getTextDocument(context.state)
 
-    const completionContext: CompletionContext = context.explicit
-      ? { triggerKind: 1 satisfies typeof CompletionTriggerKind.Invoked }
-      : {
-          triggerCharacter: context.state.sliceDoc(context.pos - 1, context.pos),
-          triggerKind: 2 satisfies typeof CompletionTriggerKind.TriggerCharacter
-        }
+    let completionContext: CompletionContext
+    if (context.explicit) {
+      completionContext = {
+        triggerKind: 1 satisfies typeof CompletionTriggerKind.Invoked
+      }
+    } else {
+      const triggerCharacter = context.state.sliceDoc(context.pos - 1, context.pos)
+      if (!options.triggerCharacters?.includes(triggerCharacter)) {
+        return null
+      }
+
+      completionContext = {
+        triggerCharacter,
+        triggerKind: 2 satisfies typeof CompletionTriggerKind.TriggerCharacter
+      }
+    }
 
     const completions = await options.doComplete(
       textDocument,

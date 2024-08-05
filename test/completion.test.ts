@@ -43,7 +43,7 @@ test('completion args explicit', async () => {
   expect(context).toStrictEqual({ triggerKind: CompletionTriggerKind.Invoked })
 })
 
-test('completion args implicit', async () => {
+test('completion args implicit trigger character match', async () => {
   let document: TextDocument | undefined
   let position: Position | undefined
   let context: LspCompletionContext | undefined
@@ -55,6 +55,7 @@ test('completion args implicit', async () => {
 
   const completionSource = createCompletionSource({
     markdownToDom,
+    triggerCharacters: 'x',
     doComplete(doc, pos, ctx) {
       document = doc
       position = pos
@@ -72,6 +73,33 @@ test('completion args implicit', async () => {
   })
 })
 
+test('completion args implicit trigger character no match', async () => {
+  let document: TextDocument | undefined
+  let position: Position | undefined
+  let context: LspCompletionContext | undefined
+
+  const view = new EditorView({
+    doc: 'Text\n',
+    extensions: [textDocument()]
+  })
+
+  const completionSource = createCompletionSource({
+    markdownToDom,
+    triggerCharacters: 'Tet',
+    doComplete(doc, pos, ctx) {
+      document = doc
+      position = pos
+      context = ctx
+    }
+  })
+
+  await completionSource(new CompletionContext(view.state, 3, false))
+
+  expect(document).toBeUndefined()
+  expect(position).toBeUndefined()
+  expect(context).toBeUndefined()
+})
+
 test('ignore null', async () => {
   const view = new EditorView({
     doc: 'Text\n',
@@ -85,7 +113,7 @@ test('ignore null', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   expect(completions).toBeNull()
 })
@@ -103,7 +131,7 @@ test('ignore undefined', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   expect(completions).toBeNull()
 })
@@ -122,7 +150,7 @@ test('ignore outdated', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false, view))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true, view))
 
   expect(completions).toBeNull()
 })
@@ -142,7 +170,7 @@ test('minimal meta', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 4, false))
+  const completions = await completionSource(new CompletionContext(view.state, 4, true))
 
   expect(completions).toStrictEqual({
     commitCharacters: undefined,
@@ -178,7 +206,7 @@ test('full meta', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   expect(completions).toStrictEqual({
     commitCharacters: undefined,
@@ -318,7 +346,7 @@ test('completion item kinds', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   expect(completions).toStrictEqual({
     commitCharacters: undefined,
@@ -544,7 +572,7 @@ test('textEditText', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   expect(completions).toStrictEqual({
     commitCharacters: undefined,
@@ -585,7 +613,7 @@ test('textEdit plain text', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   const apply = completions!.options[0]!.apply as (v: EditorView) => unknown
   apply(view)
@@ -620,7 +648,7 @@ test('textEdit snippet', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   const apply = completions!.options[0]!.apply as (v: EditorView) => unknown
   apply(view)
@@ -659,7 +687,7 @@ test('itemDefaults', async () => {
     }
   })
 
-  const completions = await completionSource(new CompletionContext(view.state, 3, false))
+  const completions = await completionSource(new CompletionContext(view.state, 3, true))
 
   const apply = completions!.options[0]!.apply as (v: EditorView) => unknown
   apply(view)

@@ -112,6 +112,8 @@ Create an LSP based completion source.
 - `fromCompletionItemKind` (`Function`, optional) — Convert an LSP completion item kind to a
   CodeMirror completion type.
 - `section` (`string`, optional) — The section to use for completions.
+- `triggerCharacters` (`string`) — Only trigger completions automatically when one of these
+  characters is typed.
 
 #### Returns
 
