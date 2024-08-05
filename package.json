@@ -1,6 +1,6 @@
 {
   "name": "codemirror-languageservice",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Integrate a Language Server Protocol compatible language service into CodeMirror",
   "keywords": [
     "code",
