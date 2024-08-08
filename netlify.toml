@@ -1,0 +1,8 @@
+[build]
+publish = 'examples/dist/'
+command = 'npm run prepack && npx vite build example'
+
+[[headers]]
+  for = '/*'
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'"
