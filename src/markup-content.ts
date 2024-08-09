@@ -15,8 +15,12 @@ function processMarkdown(
   markdown: string,
   options: fromMarkupContent.Options
 ): undefined {
+  if (!markdown) {
+    return
+  }
+
   const nodes = options.markdownToDom(markdown)
-  if (nodes == null) {
+  if (!nodes) {
     return
   }
 

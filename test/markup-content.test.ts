@@ -23,6 +23,14 @@ test('string', () => {
   `)
 })
 
+test('empty string', () => {
+  const fragment = fromMarkupContent('', document.createDocumentFragment(), { markdownToDom })
+
+  expect(fragment).toMatchInlineSnapshot(`
+    <DocumentFragment />
+  `)
+})
+
 test('MarkedString', () => {
   const fragment = fromMarkupContent(
     { language: 'javascript', value: 'console.log("Hello!")\n' },
