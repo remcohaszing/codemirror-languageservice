@@ -1,4 +1,5 @@
 __screenshots__/
+build/
 coverage/
 dist/
 node_modules/

@@ -1,5 +1,5 @@
 [build]
-publish = 'example/dist/'
+publish = 'build/'
 command = 'npm run prepack && npx vite build example'
 
 [[headers]]

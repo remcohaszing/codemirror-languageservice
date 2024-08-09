@@ -5,15 +5,14 @@ body {
 
 nav {
   background: #043d20;
+  display: flex;
+  justify-content: space-between;
   padding: 0.5rem;
   text-align: right;
 
   & a {
     color: #92b5ff;
     padding: 0 0.5rem;
-    &:not(:last-child) {
-      border-right: 1px solid #545454;
-    }
   }
 }
 
