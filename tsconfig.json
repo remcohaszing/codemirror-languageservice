@@ -5,6 +5,7 @@
     "module": "node16",
     "moduleDetection": "force",
     "noEmit": true,
+    "resolveJsonModule": true,
     "strict": true,
     "target": "es2022",
     "types": []

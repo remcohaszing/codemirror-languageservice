@@ -22,6 +22,8 @@ import {
   type TextDocument
 } from 'vscode-json-languageservice'
 
+import pkg from '../../package.json'
+
 /**
  * Convert markdown content to a DOM node.
  *
@@ -96,7 +98,7 @@ const lintOptions: createLintSource.Options = {
 const doc = JSON.stringify(
   {
     $schema: 'https://json.schemastore.org/package.json',
-    license: ''
+    ...pkg
   },
   undefined,
   2
