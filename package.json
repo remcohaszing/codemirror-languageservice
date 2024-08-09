@@ -13,7 +13,7 @@
     "language-service",
     "lsp"
   ],
-  "homepage": "https://github.com/remcohaszing/codemirror-languageservice#readme",
+  "homepage": "https://codemirror-languageservice.js.org",
   "bugs": "https://github.com/remcohaszing/codemirror-languageservice/issues",
   "repository": "remcohaszing/codemirror-languageservice",
   "funding": "https://github.com/sponsors/remcohaszing",
