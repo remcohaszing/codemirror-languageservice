@@ -49,13 +49,42 @@ test('completion args implicit trigger character match', async () => {
   let context: LspCompletionContext | undefined
 
   const view = new EditorView({
+    doc: '!@#$\n',
+    extensions: [textDocument()]
+  })
+
+  const completionSource = createCompletionSource({
+    markdownToDom,
+    triggerCharacters: '@#',
+    doComplete(doc, pos, ctx) {
+      document = doc
+      position = pos
+      context = ctx
+    }
+  })
+
+  await completionSource(new CompletionContext(view.state, 3, false))
+
+  expect(document).toBe(getTextDocument(view.state))
+  expect(position).toStrictEqual({ line: 0, character: 3 })
+  expect(context).toStrictEqual({
+    triggerCharacter: '#',
+    triggerKind: CompletionTriggerKind.TriggerCharacter
+  })
+})
+
+test('completion args implicit identifier match', async () => {
+  let document: TextDocument | undefined
+  let position: Position | undefined
+  let context: LspCompletionContext | undefined
+
+  const view = new EditorView({
     doc: 'Text\n',
     extensions: [textDocument()]
   })
 
   const completionSource = createCompletionSource({
     markdownToDom,
-    triggerCharacters: 'x',
     doComplete(doc, pos, ctx) {
       document = doc
       position = pos
@@ -73,19 +102,19 @@ test('completion args implicit trigger character match', async () => {
   })
 })
 
-test('completion args implicit trigger character no match', async () => {
+test('completion args implicit identifier no match', async () => {
   let document: TextDocument | undefined
   let position: Position | undefined
   let context: LspCompletionContext | undefined
 
   const view = new EditorView({
-    doc: 'Text\n',
+    doc: '!@#$\n',
     extensions: [textDocument()]
   })
 
   const completionSource = createCompletionSource({
     markdownToDom,
-    triggerCharacters: 'Tet',
+    triggerCharacters: '%^&*',
     doComplete(doc, pos, ctx) {
       document = doc
       position = pos

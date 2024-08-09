@@ -19,6 +19,9 @@ import { fromMarkupContent } from './markup-content.js'
 import { getTextDocument } from './text-document.js'
 import { type LSPResult } from './types.js'
 
+let alphabet = 'abcdefghijklmnopqrstuvwxyz'
+alphabet += alphabet.toUpperCase()
+
 const defaultFromCompletionItemKind: NonNullable<
   createCompletionSource.Options['fromCompletionItemKind']
 > = (kind) => {
@@ -126,6 +129,10 @@ export declare namespace createCompletionSource {
  */
 export function createCompletionSource(options: createCompletionSource.Options): CompletionSource {
   const fromCompletionItemKind = options.fromCompletionItemKind ?? defaultFromCompletionItemKind
+  let triggerCharacters = alphabet
+  if (options.triggerCharacters) {
+    triggerCharacters += options.triggerCharacters
+  }
 
   return async (context) => {
     const textDocument = getTextDocument(context.state)
@@ -137,7 +144,7 @@ export function createCompletionSource(options: createCompletionSource.Options):
       }
     } else {
       const triggerCharacter = context.state.sliceDoc(context.pos - 1, context.pos)
-      if (!options.triggerCharacters?.includes(triggerCharacter)) {
+      if (!triggerCharacters.includes(triggerCharacter)) {
         return null
       }
 
