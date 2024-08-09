@@ -178,6 +178,8 @@ export function createCompletionSource(options: createCompletionSource.Options):
     }
 
     const completionOptions: Completion[] = []
+    let minFrom = context.pos
+    let maxTo = context.pos + 1
 
     for (const item of items) {
       const { commitCharacters, detail, documentation, kind, label, textEdit, textEditText } = item
@@ -196,6 +198,12 @@ export function createCompletionSource(options: createCompletionSource.Options):
         const range = 'range' in textEdit ? textEdit.range : textEdit.replace
         const from = textDocument.offsetAt(range.start)
         const to = textDocument.offsetAt(range.end)
+        if (from < minFrom) {
+          minFrom = from
+        }
+        if (to > maxTo) {
+          maxTo = to
+        }
         const insert = textEdit.newText
         const insertTextFormat = item.insertTextFormat ?? itemDefaults?.insertTextFormat
 
@@ -211,7 +219,8 @@ export function createCompletionSource(options: createCompletionSource.Options):
     }
 
     return {
-      from: context.pos,
+      from: minFrom,
+      to: maxTo,
       commitCharacters: itemDefaults?.commitCharacters,
       options: completionOptions
     }
