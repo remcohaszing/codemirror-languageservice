@@ -179,7 +179,7 @@ export function createCompletionSource(options: createCompletionSource.Options):
 
     const completionOptions: Completion[] = []
     let minFrom = context.pos
-    let maxTo = context.pos + 1
+    let maxTo = context.pos
 
     for (const item of items) {
       const { commitCharacters, detail, documentation, kind, label, textEdit, textEditText } = item
