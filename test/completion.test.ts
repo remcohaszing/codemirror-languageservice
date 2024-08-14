@@ -213,7 +213,8 @@ test('minimal meta', async () => {
         section: undefined,
         type: undefined
       }
-    ]
+    ],
+    to: 4
   })
 })
 
@@ -249,7 +250,8 @@ test('full meta', async () => {
         section: undefined,
         type: undefined
       }
-    ]
+    ],
+    to: 3
   })
 
   const completion = completions!.options[0]!
@@ -581,7 +583,8 @@ test('completion item kinds', async () => {
         section: undefined,
         type: 'type'
       }
-    ]
+    ],
+    to: 3
   })
 })
 
@@ -616,7 +619,8 @@ test('textEditText', async () => {
         section: undefined,
         type: undefined
       }
-    ]
+    ],
+    to: 3
   })
 })
 
@@ -632,9 +636,19 @@ test('textEdit plain text', async () => {
       yield {
         label: 'completion',
         textEdit: {
-          newText: 'pletion',
+          newText: 'Completion',
           range: {
-            start: { line: 0, character: 3 },
+            start: { line: 0, character: 0 },
+            end: { line: 0, character: 5 }
+          }
+        }
+      }
+      yield {
+        label: 'completion',
+        textEdit: {
+          newText: 'Completion',
+          range: {
+            start: { line: 0, character: 0 },
             end: { line: 0, character: 5 }
           }
         }
@@ -647,6 +661,8 @@ test('textEdit plain text', async () => {
   const apply = completions!.options[0]!.apply as (v: EditorView) => unknown
   apply(view)
 
+  expect(completions?.from).toBe(0)
+  expect(completions?.to).toBe(5)
   expect(String(view.state.doc)).toBe('Completion\n')
 })
 
