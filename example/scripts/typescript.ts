@@ -46,16 +46,8 @@ function markdownToDom(markdown: string): Node {
   return html
 }
 
-/**
- * Do nothing
- */
-function noop(): undefined {
-  // Do nothing
-}
-
 const docUri = 'file:///example.tsx'
-
-let docText = `import {} from 'react'
+const docText = `import {} from 'react'
 
 console.log('hi!')
 
