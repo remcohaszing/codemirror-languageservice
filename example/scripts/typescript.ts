@@ -46,14 +46,6 @@ function markdownToDom(markdown: string): Node {
   return html
 }
 
-const docUri = 'file:///example.tsx'
-const docText = `import {} from 'react'
-
-console.log('hi!')
-
-foo(
-`
-
 const completionOptions: createCompletionSource.Options = {
   section: 'TypeScript',
   markdownToDom,
@@ -75,6 +67,14 @@ const lintOptions: createLintSource.Options = {
     return languageService.getDiagnostics(sync(document))
   }
 }
+
+const docUri = 'file:///example.tsx'
+const docText = `import {} from 'react'
+
+console.log('hi!')
+
+foo(
+`
 
 const view = new EditorView({
   doc: docText,
