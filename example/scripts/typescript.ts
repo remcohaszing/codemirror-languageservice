@@ -142,13 +142,13 @@ function getVolarLanguageService() {
     }
   }
   const sys = createSys(ts.sys, env, () => '', uriConverter)
-  const syncDocuments = createUriMap<[version: number, TextDocument]>()
+  const syncDocuments = createUriMap<[TextDocument, number | undefined, ts.IScriptSnapshot | undefined]>()
   const fsFileSnapshots = createUriMap<[number | undefined, ts.IScriptSnapshot | undefined]>()
   const language = createLanguage(
     [
       {
         getLanguageId(scriptId) {
-          const document = syncDocuments.get(scriptId)?.[1]
+          const document = syncDocuments.get(scriptId)?.[0]
           return document?.languageId
         }
       },
@@ -160,8 +160,13 @@ function getVolarLanguageService() {
     (uri, includeFsFiles) => {
       let snapshot: ts.IScriptSnapshot | undefined
 
-      if (syncDocuments.has(uri)) {
-        return
+      const syncDocument = syncDocuments.get(uri)
+      if (syncDocument) {
+        if (!syncDocument[2] || syncDocument[0].version !== syncDocument[1]) {
+          syncDocument[1] = syncDocument[0].version
+          syncDocument[2] = ts.ScriptSnapshot.fromString(syncDocument[0].getText())
+        }
+        snapshot = syncDocument[2]
       }
       else if (includeFsFiles) {
         const cache = fsFileSnapshots.get(uri)
@@ -226,21 +231,11 @@ function getVolarLanguageService() {
    */
   function sync(document: TextDocument): URI {
     const uri = URI.parse(document.uri)
-    const oldVersion = syncDocuments.get(uri)?.[0]
-    if (document.version !== oldVersion) {
-      syncDocuments.set(uri, [document.version, document])
-      language.scripts.set(uri, {
-        getChangeRange: noop,
-        getLength() {
-          return document.getText().length
-        },
-        getText(start, end) {
-          return document.getText({
-            start: document.positionAt(start),
-            end: document.positionAt(end)
-          })
-        }
-      })
+    if (syncDocuments.has(uri)) {
+      syncDocuments.get(uri)![0] = document
+    }
+    else {
+      syncDocuments.set(uri, [document, undefined, undefined])
     }
     return uri
   }
