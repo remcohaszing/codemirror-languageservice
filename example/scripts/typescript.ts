@@ -147,10 +147,7 @@ function getVolarLanguageService() {
   const language = createLanguage(
     [
       {
-        getLanguageId(scriptId) {
-          const document = syncDocuments.get(scriptId)?.[0]
-          return document?.languageId
-        }
+        getLanguageId: uri => syncDocuments.get(uri)?.[0].languageId
       },
       {
         getLanguageId: uri => resolveTsFileLanguageId(uri.path)
