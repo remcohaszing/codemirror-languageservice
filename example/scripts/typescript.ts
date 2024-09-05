@@ -31,6 +31,12 @@ import { create as createTypeScriptPlugins } from 'volar-service-typescript'
 import { type TextDocument } from 'vscode-languageserver-textdocument'
 import { URI } from 'vscode-uri'
 
+globalThis.process = {
+  cwd() {
+    return '/'
+  }
+} as NodeJS.Process
+
 /**
  * Convert markdown content to a DOM node.
  *
