@@ -14,7 +14,7 @@ import {
   type ProjectContext,
   type SourceScript
 } from '@volar/language-service'
-import { createLanguageServiceHost, createSys } from '@volar/typescript'
+import { createLanguageServiceHost, createSys, resolveFileLanguageId as resolveTsFileLanguageId } from '@volar/typescript'
 import {
   createCompletionSource,
   createHoverTooltipSource,
@@ -46,112 +46,30 @@ function markdownToDom(markdown: string): Node {
   return html
 }
 
-/**
- * Do nothing
- */
-function noop(): undefined {
-  // Do nothing
-}
-
-const fileName = '/example.tsx'
-const env: LanguageServiceEnvironment = {
-  fs: createNpmFileSystem(),
-  workspaceFolders: []
-}
-const uriConverter = {
-  asUri: URI.file,
-  asFileName(uri: URI) {
-    return uri.path
-  }
-}
-const sys = createSys(ts.sys, env, () => '', uriConverter)
-const documents = new Map<URI, TextDocument>()
-const language = createLanguage(
-  [
-    {
-      getLanguageId(scriptId) {
-        const document = documents.get(scriptId)
-        return document?.languageId
-      }
-    }
-  ],
-  createUriMap<SourceScript<URI>>(false),
-  noop
-)
-const project: ProjectContext = {
-  typescript: {
-    configFileName: '',
-    sys,
-    uriConverter,
-    ...createLanguageServiceHost(ts, sys, language, URI.file, {
-      getCompilationSettings() {
-        return {
-          checkJs: true,
-          jsx: ts.JsxEmit.ReactJSX,
-          module: ts.ModuleKind.Preserve,
-          target: ts.ScriptTarget.ESNext
-        }
-      },
-      getCurrentDirectory() {
-        return sys.getCurrentDirectory()
-      },
-      getScriptFileNames() {
-        return [fileName]
-      }
-    })
-  }
-}
-const ls = createLanguageService(language, createTypeScriptPlugins(ts, {}), env, project)
-
-/**
- * Synchronize a document from CodeMirror into Volar.
- *
- * @param document
- *   The document to synchronize.
- * @returns
- *   The URI that matches the document.
- */
-function sync(document: TextDocument): URI {
-  const uri = URI.parse(document.uri)
-  documents.set(uri, document)
-  language.scripts.set(uri, {
-    getChangeRange: noop,
-    getLength() {
-      return document.getText().length
-    },
-    getText(start, end) {
-      return document.getText({
-        start: document.positionAt(start),
-        end: document.positionAt(end)
-      })
-    }
-  })
-  return uri
-}
-
 const completionOptions: createCompletionSource.Options = {
   section: 'TypeScript',
   markdownToDom,
   triggerCharacters: '":',
   doComplete(document, position) {
-    return ls.getCompletionItems(sync(document), position)
+    return languageService.getCompletionItems(sync(document), position)
   }
 }
 
 const hoverTooltipOptions: createHoverTooltipSource.Options = {
   markdownToDom,
   doHover(document, position) {
-    return ls.getHover(sync(document), position)
+    return languageService.getHover(sync(document), position)
   }
 }
 
 const lintOptions: createLintSource.Options = {
   doDiagnostics(document) {
-    return ls.getDiagnostics(sync(document))
+    return languageService.getDiagnostics(sync(document))
   }
 }
 
-const doc = `import {} from 'react'
+const docUri = 'file:///example.tsx'
+const docText = `import {} from 'react'
 
 console.log('hi!')
 
@@ -159,10 +77,10 @@ foo(
 `
 
 const view = new EditorView({
-  doc,
+  doc: docText,
   parent: document.body,
   extensions: [
-    textDocument(String(URI.file(fileName))),
+    textDocument(docUri),
     javascript(),
     lineNumbers(),
     oneDark,
@@ -184,12 +102,14 @@ const view = new EditorView({
   ]
 })
 
+const { languageService, sync } = getVolarLanguageService()
+
 document.getElementById('format-button')!.addEventListener('click', async () => {
   const document = getTextDocument(view.state)
   const text = document.getText()
   const start = document.positionAt(0)
   const end = document.positionAt(text.length)
-  const edits = await ls.getDocumentFormattingEdits(
+  const edits = await languageService.getDocumentFormattingEdits(
     URI.parse(document.uri),
     { insertSpaces: true, tabSize: 2 },
     { start, end },
@@ -201,3 +121,111 @@ document.getElementById('format-button')!.addEventListener('click', async () => 
     dispatchTextEdits(view, edits)
   }
 })
+
+function getVolarLanguageService() {
+  const env: LanguageServiceEnvironment = {
+    fs: createNpmFileSystem(),
+    workspaceFolders: []
+  }
+  const uriConverter = {
+    asUri: URI.file,
+    asFileName(uri: URI) {
+      return uri.path
+    }
+  }
+  const sys = createSys(ts.sys, env, () => '', uriConverter)
+  const syncDocuments = createUriMap<[TextDocument, number | undefined, ts.IScriptSnapshot | undefined]>()
+  const fsFileSnapshots = createUriMap<[number | undefined, ts.IScriptSnapshot | undefined]>()
+  const language = createLanguage(
+    [
+      {
+        getLanguageId: uri => syncDocuments.get(uri)?.[0].languageId
+      },
+      {
+        getLanguageId: uri => resolveTsFileLanguageId(uri.path)
+      }
+    ],
+    createUriMap<SourceScript<URI>>(false),
+    (uri, includeFsFiles) => {
+      let snapshot: ts.IScriptSnapshot | undefined
+
+      const syncDocument = syncDocuments.get(uri)
+      if (syncDocument) {
+        if (!syncDocument[2] || syncDocument[0].version !== syncDocument[1]) {
+          syncDocument[1] = syncDocument[0].version
+          syncDocument[2] = ts.ScriptSnapshot.fromString(syncDocument[0].getText())
+        }
+        snapshot = syncDocument[2]
+      }
+      else if (includeFsFiles) {
+        const cache = fsFileSnapshots.get(uri)
+        const fileName = uriConverter.asFileName(uri)
+        const modifiedTime = sys.getModifiedTime?.(fileName)?.valueOf()
+        if (!cache || cache[0] !== modifiedTime) {
+          if (sys.fileExists(fileName)) {
+            const text = sys.readFile(fileName)
+            const snapshot = text !== undefined ? ts.ScriptSnapshot.fromString(text) : undefined
+            fsFileSnapshots.set(uri, [modifiedTime, snapshot])
+          }
+          else {
+            fsFileSnapshots.set(uri, [modifiedTime, undefined])
+          }
+        }
+        snapshot = fsFileSnapshots.get(uri)?.[1]
+      }
+
+      if (snapshot) {
+        language.scripts.set(uri, snapshot)
+      }
+      else {
+        language.scripts.delete(uri)
+      }
+    }
+  )
+  const project: ProjectContext = {
+    typescript: {
+      configFileName: '',
+      sys,
+      uriConverter,
+      ...createLanguageServiceHost(ts, sys, language, URI.file, {
+        getCompilationSettings() {
+          return {
+            checkJs: true,
+            jsx: ts.JsxEmit.ReactJSX,
+            module: ts.ModuleKind.Preserve,
+            target: ts.ScriptTarget.ESNext
+          }
+        },
+        getCurrentDirectory() {
+          return sys.getCurrentDirectory()
+        },
+        getScriptFileNames() {
+          return [docUri.slice('file://'.length)]
+        }
+      })
+    }
+  }
+  return {
+    languageService: createLanguageService(language, createTypeScriptPlugins(ts, {}), env, project),
+    sync,
+  }
+
+  /**
+   * Synchronize a document from CodeMirror into Volar.
+   *
+   * @param document
+   *   The document to synchronize.
+   * @returns
+   *   The URI that matches the document.
+   */
+  function sync(document: TextDocument): URI {
+    const uri = URI.parse(document.uri)
+    if (syncDocuments.has(uri)) {
+      syncDocuments.get(uri)![0] = document
+    }
+    else {
+      syncDocuments.set(uri, [document, undefined, undefined])
+    }
+    return uri
+  }
+}
