@@ -12,7 +12,11 @@ export default defineConfig({
     emptyOutDir: true,
     outDir: resolve('build'),
     rollupOptions: {
-      input: [resolve('example/index.html'), resolve('example/json.html')]
+      input: [
+        resolve('example/index.html'),
+        resolve('example/json.html'),
+        resolve('example/typescript.html')
+      ]
     }
   },
   resolve: {
