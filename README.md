@@ -236,6 +236,8 @@ On top of that, see my general
 - [Language Server Protocol][LSP] — The Language Server Protocol (LSP) defines the protocol used
   between an editor or IDE and a language server that provides language features like auto complete,
   go to definition, find all references etc.
+- [Transloadit](https://transloadit.com) — A simple API to handle any file in your app.
+  `codemirror-languageservice` was developed as part of the Transloadit JSON editor.
 
 Known language services that you could use this for:
 
