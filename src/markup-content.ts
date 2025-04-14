@@ -43,7 +43,7 @@ export declare namespace fromMarkupContent {
      */
     markdownToDom: (
       markdown: string
-    ) => Iterable<Node | string> | Node | string | null | undefined | void
+    ) => Iterable<Node | string> | Node | null | string | undefined | void
   }
 }
 

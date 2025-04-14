@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { markdownToDom } from './utils.js'
 import { fromMarkupContent } from '../src/markup-content.js'
+import { markdownToDom } from './utils.js'
 
 test('string', () => {
   const fragment = fromMarkupContent(

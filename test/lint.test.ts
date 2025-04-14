@@ -144,7 +144,7 @@ test('severity', async () => {
       renderMessage: undefined,
       severity: 'error',
       source: undefined,
-      to: 8
+      to: 7
     },
     {
       from: 8,
@@ -153,7 +153,7 @@ test('severity', async () => {
       renderMessage: undefined,
       severity: 'error',
       source: undefined,
-      to: 14
+      to: 13
     },
     {
       from: 14,
@@ -162,7 +162,7 @@ test('severity', async () => {
       renderMessage: undefined,
       severity: 'warning',
       source: undefined,
-      to: 22
+      to: 21
     },
     {
       from: 22,
@@ -171,7 +171,7 @@ test('severity', async () => {
       renderMessage: undefined,
       severity: 'info',
       source: undefined,
-      to: 27
+      to: 26
     },
     {
       from: 27,
@@ -180,7 +180,7 @@ test('severity', async () => {
       renderMessage: undefined,
       severity: 'hint',
       source: undefined,
-      to: 32
+      to: 31
     }
   ])
 })
@@ -222,7 +222,7 @@ test('tags', async () => {
       renderMessage: undefined,
       severity: 'error',
       source: undefined,
-      to: 12
+      to: 11
     },
     {
       from: 12,
@@ -231,7 +231,7 @@ test('tags', async () => {
       renderMessage: undefined,
       severity: 'error',
       source: undefined,
-      to: 23
+      to: 22
     }
   ])
 })

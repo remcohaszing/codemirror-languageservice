@@ -74,7 +74,6 @@ const completionOptions: createCompletionSource.Options = {
   section: 'Word completion',
   markdownToDom,
   triggerCharacters: '":',
-  // @ts-expect-error https://github.com/microsoft/vscode-json-languageservice/pull/239
   doComplete(document, position) {
     return ls.doComplete(document, position, getJSONDocument(document))
   }
@@ -82,14 +81,12 @@ const completionOptions: createCompletionSource.Options = {
 
 const hoverTooltipOptions: createHoverTooltipSource.Options = {
   markdownToDom,
-  // @ts-expect-error https://github.com/microsoft/vscode-json-languageservice/pull/239
   doHover(document, position) {
     return ls.doHover(document, position, getJSONDocument(document))
   }
 }
 
 const lintOptions: createLintSource.Options = {
-  // @ts-expect-error https://github.com/microsoft/vscode-json-languageservice/pull/239
   doDiagnostics(document) {
     return ls.doValidation(document, getJSONDocument(document))
   }

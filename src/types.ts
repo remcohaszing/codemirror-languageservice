@@ -12,4 +12,4 @@ export type Promisable<T> = PromiseLike<T> | T
  * @template T
  * The regular result type to expect.
  */
-export type LSPResult<T> = Promisable<T | null | undefined | void>
+export type LSPResult<T> = Promisable<null | T | undefined | void>
