@@ -5,4 +5,4 @@ command = 'npx vite build'
 [[headers]]
   for = '/*'
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; connect-src *; img-src 'self' data:; style-src 'self' 'unsafe-inline'"
+    Content-Security-Policy = "default-src 'self'; connect-src *; img-src 'self' data:; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'"
