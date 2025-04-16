@@ -33,8 +33,8 @@ async function processMarkdown(
   }
 }
 
-export declare namespace fromMarkupContent {
-  interface Options {
+export namespace fromMarkupContent {
+  export interface Options {
     /**
      * Convert a markdown string to DOM.
      *

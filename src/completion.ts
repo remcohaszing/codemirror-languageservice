@@ -77,8 +77,8 @@ const defaultFromCompletionItemKind: NonNullable<
   }
 }
 
-export declare namespace createCompletionSource {
-  interface Options extends fromMarkupContent.Options {
+export namespace createCompletionSource {
+  export interface Options extends fromMarkupContent.Options {
     /**
      * Convert an LSP completion item kind to a CodeMirror completion type.
      *

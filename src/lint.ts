@@ -18,8 +18,8 @@ const defaultFormatSource: NonNullable<createLintSource.Options['formatSource']>
   }
 }
 
-export declare namespace createLintSource {
-  interface Options {
+export namespace createLintSource {
+  export interface Options {
     /**
      * Provide LSP diagnostics.
      *

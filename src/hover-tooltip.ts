@@ -6,8 +6,8 @@ import { fromMarkupContent } from './markup-content.js'
 import { getTextDocument } from './text-document.js'
 import { type LSPResult } from './types.js'
 
-export declare namespace createHoverTooltipSource {
-  interface Options extends fromMarkupContent.Options {
+export namespace createHoverTooltipSource {
+  export interface Options extends fromMarkupContent.Options {
     /**
      * Provide LSP hover info.
      *
