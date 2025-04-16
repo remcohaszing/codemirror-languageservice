@@ -1,3 +1,5 @@
+import '@wooorm/starry-night/style/both'
+
 import { autocompletion, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { javascript } from '@codemirror/lang-javascript'
@@ -15,6 +17,7 @@ import {
   type SourceScript
 } from '@volar/language-service'
 import { createLanguageServiceHost, createSys, resolveFileLanguageId } from '@volar/typescript'
+import { all } from '@wooorm/starry-night'
 import {
   createCompletionSource,
   createHoverTooltipSource,
@@ -24,9 +27,12 @@ import {
   textDocument
 } from 'codemirror-languageservice'
 import { toDom } from 'hast-util-to-dom'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { toHast } from 'mdast-util-to-hast'
+import rehypeStarryNight from 'rehype-starry-night'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
 import * as ts from 'typescript'
+import { unified } from 'unified'
 import { create as createTypeScriptPlugins } from 'volar-service-typescript'
 import { type TextDocument } from 'vscode-languageserver-textdocument'
 import { URI } from 'vscode-uri'
@@ -37,6 +43,12 @@ globalThis.process = {
   }
 } as NodeJS.Process
 
+const processor = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype)
+  .use(rehypeStarryNight, { grammars: all })
+
 /**
  * Convert markdown content to a DOM node.
  *
@@ -45,9 +57,9 @@ globalThis.process = {
  * @returns
  *   The DOM node that represents the markdown.
  */
-function markdownToDom(markdown: string): Node {
-  const mdast = fromMarkdown(markdown)
-  const hast = toHast(mdast)
+async function markdownToDom(markdown: string): Promise<Node> {
+  const mdast = processor.parse(markdown)
+  const hast = await processor.run(mdast)
   const html = toDom(hast, { fragment: true })
   return html
 }

@@ -14,8 +14,10 @@ import {
   textDocument
 } from 'codemirror-languageservice'
 import { toDom } from 'hast-util-to-dom'
-import { fromMarkdown } from 'mdast-util-from-markdown'
-import { toHast } from 'mdast-util-to-hast'
+import rehypeStarryNight from 'rehype-starry-night'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import { unified } from 'unified'
 import {
   getLanguageService,
   type JSONDocument,
@@ -23,6 +25,8 @@ import {
 } from 'vscode-json-languageservice'
 
 import pkg from '../../package.json'
+
+const processor = unified().use(remarkParse).use(remarkRehype).use(rehypeStarryNight)
 
 /**
  * Convert markdown content to a DOM node.
@@ -32,9 +36,9 @@ import pkg from '../../package.json'
  * @returns
  *   The DOM node that represents the markdown.
  */
-function markdownToDom(markdown: string): Node {
-  const mdast = fromMarkdown(markdown)
-  const hast = toHast(mdast)
+async function markdownToDom(markdown: string): Promise<Node> {
+  const mdast = processor.parse(markdown)
+  const hast = await processor.run(mdast)
   const html = toDom(hast, { fragment: true })
   return html
 }
