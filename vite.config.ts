@@ -29,8 +29,8 @@ export default defineConfig({
     browser: {
       enabled: true,
       headless: true,
-      name: 'chromium',
-      provider: 'playwright'
+      provider: 'playwright',
+      instances: [{ browser: 'chromium' }]
     },
     coverage: {
       enabled: true,
