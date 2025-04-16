@@ -1,4 +1,4 @@
-import { type HoverTooltipSource } from '@codemirror/view'
+import { type HoverTooltipSource, type TooltipView } from '@codemirror/view'
 import { type Hover, type Position } from 'vscode-languageserver-protocol'
 import { type TextDocument } from 'vscode-languageserver-textdocument'
 
@@ -55,10 +55,14 @@ export function createHoverTooltipSource(
       end = textDocument.offsetAt(range.end)
     }
 
+    const tooltipView: TooltipView = {
+      dom: await fromMarkupContent(contents, document.createElement('div'), options)
+    }
+
     return {
       pos: start,
       end,
-      create: () => ({ dom: fromMarkupContent(contents, document.createElement('div'), options) })
+      create: () => tooltipView
     }
   }
 }

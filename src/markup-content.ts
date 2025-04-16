@@ -1,5 +1,7 @@
 import { type MarkedString, type MarkupContent } from 'vscode-languageserver-protocol'
 
+import { type Promisable } from './types.js'
+
 /**
  * Process markdown into a DOM.
  *
@@ -10,16 +12,16 @@ import { type MarkedString, type MarkupContent } from 'vscode-languageserver-pro
  * @param options
  *   Additional options.
  */
-function processMarkdown(
+async function processMarkdown(
   parent: ParentNode,
   markdown: string,
   options: fromMarkupContent.Options
-): undefined {
+): Promise<undefined> {
   if (!markdown) {
     return
   }
 
-  const nodes = options.markdownToDom(markdown)
+  const nodes = await options.markdownToDom(markdown)
   if (!nodes) {
     return
   }
@@ -43,7 +45,7 @@ export declare namespace fromMarkupContent {
      */
     markdownToDom: (
       markdown: string
-    ) => Iterable<Node | string> | Node | null | string | undefined | void
+    ) => Promisable<Iterable<Node | string> | Node | null | string | undefined | void>
   }
 }
 
@@ -59,20 +61,20 @@ export declare namespace fromMarkupContent {
  * @returns
  *   The parent container.
  */
-export function fromMarkupContent<Parent extends ParentNode>(
+export async function fromMarkupContent<Parent extends ParentNode>(
   contents: MarkedString | MarkedString[] | MarkupContent,
   parent: Parent,
   options: fromMarkupContent.Options
-): Parent {
+): Promise<Parent> {
   if (Array.isArray(contents)) {
     for (const content of contents) {
-      fromMarkupContent(content, parent, options)
+      await fromMarkupContent(content, parent, options)
     }
   } else if (typeof contents === 'string') {
-    processMarkdown(parent, contents, options)
+    await processMarkdown(parent, contents, options)
   } else if ('kind' in contents) {
     if (contents.kind === 'markdown') {
-      processMarkdown(parent, contents.value, options)
+      await processMarkdown(parent, contents.value, options)
     } else {
       const paragraph = document.createElement('p')
       paragraph.append(contents.value)

@@ -255,7 +255,7 @@ test('full meta', async () => {
   })
 
   const completion = completions!.options[0]!
-  const info = (completion.info as () => CompletionInfo)()
+  const info = await (completion.info as () => Promise<CompletionInfo>)()
   expect(info).toMatchInlineSnapshot(`
     <DocumentFragment>
       <p>

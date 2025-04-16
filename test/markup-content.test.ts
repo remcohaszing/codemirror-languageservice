@@ -3,8 +3,8 @@ import { expect, test } from 'vitest'
 import { fromMarkupContent } from '../src/markup-content.js'
 import { markdownToDom } from './utils.js'
 
-test('string', () => {
-  const fragment = fromMarkupContent(
+test('string', async () => {
+  const fragment = await fromMarkupContent(
     '[markdown](https://commonmark.org)',
     document.createDocumentFragment(),
     { markdownToDom }
@@ -23,16 +23,16 @@ test('string', () => {
   `)
 })
 
-test('empty string', () => {
-  const fragment = fromMarkupContent('', document.createDocumentFragment(), { markdownToDom })
+test('empty string', async () => {
+  const fragment = await fromMarkupContent('', document.createDocumentFragment(), { markdownToDom })
 
   expect(fragment).toMatchInlineSnapshot(`
     <DocumentFragment />
   `)
 })
 
-test('MarkedString', () => {
-  const fragment = fromMarkupContent(
+test('MarkedString', async () => {
+  const fragment = await fromMarkupContent(
     { language: 'javascript', value: 'console.log("Hello!")\n' },
     document.createDocumentFragment(),
     { markdownToDom }
@@ -52,8 +52,8 @@ test('MarkedString', () => {
   `)
 })
 
-test('array', () => {
-  const fragment = fromMarkupContent(
+test('array', async () => {
+  const fragment = await fromMarkupContent(
     [
       '[markdown](https://commonmark.org)',
       { language: 'javascript', value: 'console.log("Hello!")\n' }
@@ -83,8 +83,8 @@ test('array', () => {
   `)
 })
 
-test('MarkupContent markdown', () => {
-  const fragment = fromMarkupContent(
+test('MarkupContent markdown', async () => {
+  const fragment = await fromMarkupContent(
     { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
     document.createDocumentFragment(),
     { markdownToDom }
@@ -103,8 +103,8 @@ test('MarkupContent markdown', () => {
   `)
 })
 
-test('MarkupContent plaintext', () => {
-  const fragment = fromMarkupContent(
+test('MarkupContent plaintext', async () => {
+  const fragment = await fromMarkupContent(
     { kind: 'plaintext', value: '[markdown](https://commonmark.org)' },
     document.createDocumentFragment(),
     { markdownToDom }
@@ -119,8 +119,8 @@ test('MarkupContent plaintext', () => {
   `)
 })
 
-test('markdownToDom iterable', () => {
-  const fragment = fromMarkupContent(
+test('markdownToDom iterable', async () => {
+  const fragment = await fromMarkupContent(
     { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
     document.createDocumentFragment(),
     {
@@ -143,8 +143,32 @@ test('markdownToDom iterable', () => {
   `)
 })
 
-test('markdownToDom null', () => {
-  const fragment = fromMarkupContent(
+test('markdownToDom iterable promise', async () => {
+  const fragment = await fromMarkupContent(
+    { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
+    document.createDocumentFragment(),
+    {
+      markdownToDom(markdown) {
+        return Promise.resolve([markdownToDom(markdown)])
+      }
+    }
+  )
+
+  expect(fragment).toMatchInlineSnapshot(`
+    <DocumentFragment>
+      <p>
+        <a
+          href="https://commonmark.org"
+        >
+          markdown
+        </a>
+      </p>
+    </DocumentFragment>
+  `)
+})
+
+test('markdownToDom null', async () => {
+  const fragment = await fromMarkupContent(
     { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
     document.createDocumentFragment(),
     {
@@ -157,13 +181,41 @@ test('markdownToDom null', () => {
   expect(fragment).toMatchInlineSnapshot('<DocumentFragment />')
 })
 
-test('markdownToDom undefined', () => {
-  const fragment = fromMarkupContent(
+test('markdownToDom null promise', async () => {
+  const fragment = await fromMarkupContent(
+    { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
+    document.createDocumentFragment(),
+    {
+      markdownToDom() {
+        return Promise.resolve(null)
+      }
+    }
+  )
+
+  expect(fragment).toMatchInlineSnapshot('<DocumentFragment />')
+})
+
+test('markdownToDom undefined', async () => {
+  const fragment = await fromMarkupContent(
     { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
     document.createDocumentFragment(),
     {
       markdownToDom() {
         // Do nothing
+      }
+    }
+  )
+
+  expect(fragment).toMatchInlineSnapshot('<DocumentFragment />')
+})
+
+test('markdownToDom undefined promise', async () => {
+  const fragment = await fromMarkupContent(
+    { kind: 'markdown', value: '[markdown](https://commonmark.org)' },
+    document.createDocumentFragment(),
+    {
+      markdownToDom() {
+        return Promise.resolve()
       }
     }
   )
