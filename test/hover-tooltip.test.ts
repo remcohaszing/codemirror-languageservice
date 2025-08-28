@@ -1,8 +1,10 @@
-import { EditorView, type Tooltip } from '@codemirror/view'
+import type { Tooltip } from '@codemirror/view'
+import type { Position } from 'vscode-languageserver-protocol'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
+import { EditorView } from '@codemirror/view'
 import { createHoverTooltipSource, getTextDocument, textDocument } from 'codemirror-languageservice'
 import { expect, test } from 'vitest'
-import { type Position } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
 
 import { markdownToDom } from './utils.js'
 

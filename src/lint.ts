@@ -1,9 +1,10 @@
-import { type Diagnostic as CodeMirrorDiagnostic, type LintSource } from '@codemirror/lint'
-import { type Diagnostic, type DiagnosticTag } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
+import type { Diagnostic as CodeMirrorDiagnostic, LintSource } from '@codemirror/lint'
+import type { Diagnostic, DiagnosticTag } from 'vscode-languageserver-protocol'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
+import type { LSPResult } from './types.js'
 
 import { getTextDocument } from './text-document.js'
-import { type LSPResult } from './types.js'
 
 const defaultFormatSource: NonNullable<createLintSource.Options['formatSource']> = (diagnostic) => {
   let result = diagnostic.source ?? ''

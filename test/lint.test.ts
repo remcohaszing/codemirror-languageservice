@@ -1,8 +1,9 @@
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
 import { EditorView } from '@codemirror/view'
 import { createLintSource, getTextDocument, textDocument } from 'codemirror-languageservice'
 import { expect, test } from 'vitest'
 import { DiagnosticSeverity, DiagnosticTag } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
 
 test('diagnostics args', async () => {
   let document: TextDocument | undefined

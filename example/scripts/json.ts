@@ -1,3 +1,5 @@
+import type { JSONDocument, TextDocument } from 'vscode-json-languageservice'
+
 import { autocompletion, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { json } from '@codemirror/lang-json'
@@ -18,11 +20,7 @@ import rehypeStarryNight from 'rehype-starry-night'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import { unified } from 'unified'
-import {
-  getLanguageService,
-  type JSONDocument,
-  type TextDocument
-} from 'vscode-json-languageservice'
+import { getLanguageService } from 'vscode-json-languageservice'
 
 import pkg from '../../package.json'
 

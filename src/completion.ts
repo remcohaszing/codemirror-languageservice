@@ -1,23 +1,21 @@
-import {
-  type Completion,
-  type CompletionSource,
-  insertCompletionText,
-  snippet
-} from '@codemirror/autocomplete'
-import {
-  type CompletionContext,
-  type CompletionItem,
-  type CompletionItemKind,
-  type CompletionList,
-  type CompletionTriggerKind,
-  type InsertTextFormat,
-  type Position
+import type { Completion, CompletionSource } from '@codemirror/autocomplete'
+import type {
+  CompletionContext,
+  CompletionItem,
+  CompletionItemKind,
+  CompletionList,
+  CompletionTriggerKind,
+  InsertTextFormat,
+  Position
 } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
+import type { LSPResult } from './types.js'
+
+import { insertCompletionText, snippet } from '@codemirror/autocomplete'
 
 import { fromMarkupContent } from './markup-content.js'
 import { getTextDocument } from './text-document.js'
-import { type LSPResult } from './types.js'
 
 let alphabet = 'abcdefghijklmnopqrstuvwxyz'
 alphabet += alphabet.toUpperCase()

@@ -1,6 +1,6 @@
-import { type ChangeSpec, type Text } from '@codemirror/state'
-import { type EditorView } from '@codemirror/view'
-import { type Position, type TextEdit } from 'vscode-languageserver-protocol'
+import type { ChangeSpec, Text } from '@codemirror/state'
+import type { EditorView } from '@codemirror/view'
+import type { Position, TextEdit } from 'vscode-languageserver-protocol'
 
 /**
  * Get the character offset of a CodeMirror text document from an LSP position.

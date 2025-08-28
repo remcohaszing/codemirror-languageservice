@@ -1,6 +1,6 @@
-import { type MarkedString, type MarkupContent } from 'vscode-languageserver-protocol'
+import type { MarkedString, MarkupContent } from 'vscode-languageserver-protocol'
 
-import { type Promisable } from './types.js'
+import type { Promisable } from './types.js'
 
 /**
  * Process markdown into a DOM.

@@ -1,5 +1,12 @@
 import '@wooorm/starry-night/style/both'
 
+import type {
+  LanguageServiceEnvironment,
+  ProjectContext,
+  SourceScript
+} from '@volar/language-service'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
 import { autocompletion, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { javascript } from '@codemirror/lang-javascript'
@@ -8,14 +15,7 @@ import { linter, lintKeymap } from '@codemirror/lint'
 import { oneDark } from '@codemirror/theme-one-dark'
 import { EditorView, hoverTooltip, keymap, lineNumbers } from '@codemirror/view'
 import { createNpmFileSystem } from '@volar/jsdelivr'
-import {
-  createLanguage,
-  createLanguageService,
-  createUriMap,
-  type LanguageServiceEnvironment,
-  type ProjectContext,
-  type SourceScript
-} from '@volar/language-service'
+import { createLanguage, createLanguageService, createUriMap } from '@volar/language-service'
 import { createLanguageServiceHost, createSys, resolveFileLanguageId } from '@volar/typescript'
 import { all } from '@wooorm/starry-night'
 import {
@@ -34,7 +34,6 @@ import remarkRehype from 'remark-rehype'
 import * as ts from 'typescript'
 import { unified } from 'unified'
 import { create as createTypeScriptPlugins } from 'volar-service-typescript'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
 import { URI } from 'vscode-uri'
 
 globalThis.process = {

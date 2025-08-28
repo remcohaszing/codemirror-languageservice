@@ -1,10 +1,11 @@
-import { type HoverTooltipSource, type TooltipView } from '@codemirror/view'
-import { type Hover, type Position } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
+import type { HoverTooltipSource, TooltipView } from '@codemirror/view'
+import type { Hover, Position } from 'vscode-languageserver-protocol'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
+import type { LSPResult } from './types.js'
 
 import { fromMarkupContent } from './markup-content.js'
 import { getTextDocument } from './text-document.js'
-import { type LSPResult } from './types.js'
 
 export namespace createHoverTooltipSource {
   export interface Options extends fromMarkupContent.Options {

@@ -1,19 +1,19 @@
-import {
-  CompletionContext,
-  type CompletionInfo,
-  hasNextSnippetField
-} from '@codemirror/autocomplete'
+import type { CompletionInfo } from '@codemirror/autocomplete'
+import type {
+  CompletionContext as LspCompletionContext,
+  Position
+} from 'vscode-languageserver-protocol'
+import type { TextDocument } from 'vscode-languageserver-textdocument'
+
+import { CompletionContext, hasNextSnippetField } from '@codemirror/autocomplete'
 import { EditorView } from '@codemirror/view'
 import { createCompletionSource, getTextDocument, textDocument } from 'codemirror-languageservice'
 import { expect, test } from 'vitest'
 import {
   CompletionItemKind,
   CompletionTriggerKind,
-  InsertTextFormat,
-  type CompletionContext as LspCompletionContext,
-  type Position
+  InsertTextFormat
 } from 'vscode-languageserver-protocol'
-import { type TextDocument } from 'vscode-languageserver-textdocument'
 
 import { markdownToDom } from './utils.js'
 

@@ -1,5 +1,7 @@
+import type { EditorState, Extension } from '@codemirror/state'
+
 import { language } from '@codemirror/language'
-import { type EditorState, type Extension, Facet, StateField } from '@codemirror/state'
+import { Facet, StateField } from '@codemirror/state'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 
 let inmemoryDocumentCounter = 0
