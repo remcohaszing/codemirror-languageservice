@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 
+import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 
 function resolve(path: string): string {
@@ -29,13 +30,12 @@ export default defineConfig({
     browser: {
       enabled: true,
       headless: true,
-      provider: 'playwright',
+      provider: playwright(),
       instances: [{ browser: 'chromium' }]
     },
     coverage: {
       enabled: true,
-      include: ['src'],
-      provider: 'istanbul'
+      include: ['src']
     }
   }
 })
