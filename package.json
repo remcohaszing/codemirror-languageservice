@@ -48,7 +48,7 @@
     "@codemirror/lang-javascript": "^6.0.0",
     "@codemirror/lang-json": "^6.0.0",
     "@codemirror/theme-one-dark": "^6.0.0",
-    "@remcohaszing/eslint": "^12.0.0",
+    "@remcohaszing/eslint": "^13.0.0",
     "@vitest/browser-playwright": "^4.0.0",
     "@vitest/coverage-v8": "^4.0.0",
     "@volar/jsdelivr": "~2.4.0",
